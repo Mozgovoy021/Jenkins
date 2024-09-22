@@ -1,0 +1,271 @@
+{
+	"info": {
+		"_postman_id": "9de1d950-c3a5-4409-a95b-1faada18caf0",
+		"name": "Homework 15.1",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "14711003"
+	},
+	"item": [
+		{
+			"name": "Registration",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const testCases = [",
+							"    {",
+							"        name: \"\", ",
+							"        lastName: \"\", ",
+							"        email: \"\", ",
+							"        password: \"\", ",
+							"        expectedStatusCode: 400",
+							"    },",
+							"",
+							"    {",
+							"        name: \"ValidName\", ",
+							"        lastName: \"Doe\", ",
+							"        email: \"invalid-email\", ",
+							"        password: \"ValidPassword123\", ",
+							"        expectedStatusCode: 400",
+							"    },",
+							"",
+							"    {",
+							"        name: \"ValidName\", ",
+							"        lastName: \"Doe\", ",
+							"        email: \"john.doe@example.com\", ",
+							"        password: \"123\", ",
+							"        expectedStatusCode: 400",
+							"    }",
+							"];",
+							"",
+							"testCases.forEach(testCase => {",
+							"    pm.sendRequest({",
+							"        url: pm.environment.get(\"URL\") + \"/auth/signup\",",
+							"        method: \"POST\",",
+							"        header: {",
+							"            \"Content-Type\": \"application/json\"",
+							"        },",
+							"        body: {",
+							"            mode: \"raw\",",
+							"            raw: JSON.stringify({",
+							"                name: testCase.name,",
+							"                lastName: testCase.lastName,",
+							"                email: testCase.email,",
+							"                password: testCase.password,",
+							"                repeatPassword: testCase.password",
+							"            })",
+							"        }",
+							"    }, function (err, response) {",
+							"        if (err) {",
+							"            pm.test(`Request failed for case with name=\"${testCase.name}\", lastName=\"${testCase.lastName}\", email=\"${testCase.email}\"`, function () {",
+							"                pm.expect.fail(`Request failed with error: ${err}`);",
+							"            });",
+							"            return;",
+							"        }",
+							"        ",
+							"        const expectedStatus = testCase.expectedStatusCode;",
+							"        const actualStatus = response.code;",
+							"",
+							"        // Перевірка статусу",
+							"        pm.test(`Status code check for name=\"${testCase.name}\", lastName=\"${testCase.lastName}\", email=\"${testCase.email}\"`, function () {",
+							"            pm.expect(actualStatus).to.eql(expectedStatus);",
+							"        });",
+							"    });",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"{{Name}}\",\n  \"lastName\": \"{{LastName}}\",\n  \"email\": \"{{Email}}\",\n  \"password\": \"{{Password}}\",\n  \"repeatPassword\": \"{{Password}}\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/auth/signup",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"auth",
+						"signup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const testCases = [",
+							"    {",
+							"        photo: \"\", ",
+							"        name: \"\", ",
+							"        lastName: \"\", ",
+							"        dateBirth: \"\", ",
+							"        country: \"\", ",
+							"        expectedStatusCode: 400",
+							"    },",
+							"",
+							"    {",
+							"        photo: \"valid-photo.png\", ",
+							"        name: \"ValidName\", ",
+							"        lastName: \"Doe\", ",
+							"        dateBirth: \"invalid-date-format\", ",
+							"        country: \"USA\", ",
+							"        expectedStatusCode: 400",
+							"    },",
+							"",
+							"    {",
+							"        photo: \"valid-photo.png\", ",
+							"        name: \"ValidName\", ",
+							"        lastName: \"Doe\", ",
+							"        dateBirth: \"1990-01-01\", ",
+							"        country: \"InvalidCountry\", ",
+							"        expectedStatusCode: 400",
+							"    }",
+							"];",
+							"",
+							"testCases.forEach(testCase => {",
+							"    pm.sendRequest({",
+							"        url: pm.environment.get(\"URL\") + \"/auth/signup\",",
+							"        method: \"POST\",",
+							"        header: {",
+							"            \"Content-Type\": \"application/json\"",
+							"        },",
+							"        body: {",
+							"            mode: \"raw\",",
+							"            raw: JSON.stringify({",
+							"                photo: testCase.photo,",
+							"                name: testCase.name,",
+							"                lastName: testCase.lastName,",
+							"                dateBirth: testCase.dateBirth,",
+							"                country: testCase.country",
+							"            })",
+							"        }",
+							"    }, function (err, response) {",
+							"        if (err) {",
+							"            pm.test(`Request failed for case with photo=\"${testCase.photo}\", name=\"${testCase.name}\", lastName=\"${testCase.lastName}\", dateBirth=\"${testCase.dateBirth}\", country=\"${testCase.country}\"`, function () {",
+							"                pm.expect.fail(`Request failed with error: ${err}`);",
+							"            });",
+							"            return;",
+							"        }",
+							"        ",
+							"        const expectedStatus = testCase.expectedStatusCode;",
+							"        const actualStatus = response.code;",
+							"",
+							"        pm.test(`Status code check for photo=\"${testCase.photo}\", name=\"${testCase.name}\", lastName=\"${testCase.lastName}\", dateBirth=\"${testCase.dateBirth}\", country=\"${testCase.country}\"`, function () {",
+							"            pm.expect(actualStatus).to.eql(expectedStatus);",
+							"        });",
+							"    });",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"photo\": \"{{Photo}}\",\n  \"name\": \"{{Name}}\",\n  \"lastName\": \"{{LastName}}\",\n  \"dateBirth\": \"{{DateBirth}}\",\n  \"country\": \"{{Country}}\"\n}\n\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/users/profile",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"users",
+						"profile"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "api_key",
+			"value": "PMAK-66dca86588635100010c4fe3-c96d969414f7a8f8de85d380cec2b1bf7b",
+			"type": "string"
+		},
+		{
+			"key": "testCases",
+			"value": ""
+		},
+		{
+			"key": "currentTestIndex",
+			"value": ""
+		},
+		{
+			"key": "errors",
+			"value": ""
+		}
+	]
+}
